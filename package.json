@@ -1,0 +1,9 @@
+{
+  "name": "geoWars",
+  "version": "1.0.0",
+  "start": "ws",
+  "devDependencies": {
+    "local-web-server": "^0.5.20",
+    "phaser": "^2.3.0"
+  }
+}
