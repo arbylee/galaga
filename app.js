@@ -69,7 +69,7 @@ Weapon.SingleBullet = function (game) {
 
     for (var i = 0; i < 64; i++)
     {
-        this.add(new Bullet(game, 'bullet5'), true);
+        this.add(new Bullet(game, 'bullet1'), true);
     }
 
     return this;
@@ -115,9 +115,9 @@ PhaserGame.prototype = {
   preload: function(){
     this.game.load.image('background', 'assets/background.png')
     this.game.load.image('ship', 'assets/ship.png')
-    for (var i = 1; i <= 11; i++)
+    for (var i = 1; i <= 1; i++)
     {
-        this.load.image('bullet' + i, 'assets/bullet' + i + '.png');
+        this.load.image('bullet' + i, 'assets/bullet_' + i + '.png');
     }
   },
 
