@@ -1,73 +1,158 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-var player;
+
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 var cursors;
 
-function preload(){
-  game.load.image('background', 'assets/background.png')
-  game.load.image('ship', 'assets/ship.png')
-}
+var Bullet = function (game, key) {
 
-function create(){
-  game.physics.startSystem(Phaser.Physics.ARCADE);
-  game.add.sprite(0, 0, 'background');
-  player = game.add.sprite(400, 300, 'ship')
-  game.physics.arcade.enable(player);
-  player.body.collideWorldBounds = true;
-}
+    Phaser.Sprite.call(this, game, 0, 0, key);
 
-function update(){
-  cursors = game.input.keyboard.createCursorKeys();
-  player.body.velocity.x = 0;
-  player.body.velocity.y = 0;
-  if(cursors.left.isDown){
-    player.body.velocity.x -= 150;
+    this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+
+    this.anchor.set(0.5);
+
+    this.checkWorldBounds = true;
+    this.outOfBoundsKill = true;
+    this.exists = false;
+
+    this.tracking = false;
+    this.scaleSpeed = 0;
+
+};
+
+Bullet.prototype = Object.create(Phaser.Sprite.prototype);
+Bullet.prototype.constructor = Bullet;
+
+Bullet.prototype.fire = function (x, y, angle, speed, gx, gy) {
+
+    gx = gx || 0;
+    gy = gy || 0;
+
+    this.reset(x, y);
+    this.scale.set(1);
+
+    this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
+
+    this.angle = angle;
+
+    this.body.gravity.set(gx, gy);
+
+};
+
+Bullet.prototype.update = function () {
+
+    if (this.tracking)
+    {
+        this.rotation = Math.atan2(this.body.velocity.y, this.body.velocity.x);
+    }
+
+    if (this.scaleSpeed > 0)
+    {
+        this.scale.x += this.scaleSpeed;
+        this.scale.y += this.scaleSpeed;
+    }
+
+};
+
+
+var Weapon = {};
+
+////////////////////////////////////////////////////
+//  A single bullet is fired in front of the ship //
+////////////////////////////////////////////////////
+
+Weapon.SingleBullet = function (game) {
+
+    Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
+
+    this.nextFire = 0;
+    this.bulletSpeed = 600;
+    this.fireRate = 100;
+
+    for (var i = 0; i < 64; i++)
+    {
+        this.add(new Bullet(game, 'bullet5'), true);
+    }
+
+    return this;
+
+};
+
+Weapon.SingleBullet.prototype = Object.create(Phaser.Group.prototype);
+Weapon.SingleBullet.prototype.constructor = Weapon.SingleBullet;
+
+Weapon.SingleBullet.prototype.fire = function (source) {
+
+    if (this.game.time.time < this.nextFire) { return; }
+
+    var x = source.x + 10;
+    var y = source.y + 10;
+
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+
+    this.nextFire = this.game.time.time + this.fireRate;
+
+};
+
+var PhaserGame = function () {
+
+    this.background = null;
+    this.foreground = null;
+
+    this.player = null;
+    this.cursors = null;
+    this.speed = 300;
+
+    this.weapons = [];
+    this.currentWeapon = 0;
+    this.weaponName = null;
+
+};
+
+PhaserGame.prototype = {
+  init: function(){
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+  },
+
+  preload: function(){
+    this.game.load.image('background', 'assets/background.png')
+    this.game.load.image('ship', 'assets/ship.png')
+    for (var i = 1; i <= 11; i++)
+    {
+        this.load.image('bullet' + i, 'assets/bullet' + i + '.png');
+    }
+  },
+
+  create: function(){
+    this.game.add.sprite(0, 0, 'background');
+    this.player = this.game.add.sprite(400, 300, 'ship')
+    this.game.physics.arcade.enable(this.player);
+    this.player.body.collideWorldBounds = true;
+    cursors = this.game.input.keyboard.createCursorKeys();
+    this.game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+
+    this.weapons.push(new Weapon.SingleBullet(this.game));
+  },
+
+  update: function(){
+    this.player.body.velocity.x = 0;
+    this.player.body.velocity.y = 0;
+    if(cursors.left.isDown){
+      this.player.body.velocity.x -= 150;
+    }
+    if(cursors.right.isDown){
+      this.player.body.velocity.x += 150;
+    }
+    if(cursors.up.isDown){
+      this.player.body.velocity.y -= 150;
+    }
+    if(cursors.down.isDown){
+      this.player.body.velocity.y += 150;
+    }
+    if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+      this.weapons[this.currentWeapon].fire(this.player);
+    }
   }
-  if(cursors.right.isDown){
-    player.body.velocity.x += 150;
-  }
-  if(cursors.up.isDown){
-    player.body.velocity.y -= 150;
-  }
-  if(cursors.down.isDown){
-    player.body.velocity.y += 150;
-  }
 }
 
-
-
-function foopreload(){
-  game.load.atlasJSONHash('cityscene', 'assets/cityscene.png', 'assets/cityscene.json');
-}
-
-var capguy;
-function foo(){
-  // create capguy sprite
-  capguy = game.add.sprite(100, 180, 'cityscene', 'capguy/walk/0001.png');
-
-  // scale it down a bit
-  capguy.scale.setTo(0.5,0.5);
-
-  // add animation phases
-  capguy.animations.add('walk', [
-      'capguy/walk/0001.png',
-      'capguy/walk/0002.png',
-      'capguy/walk/0003.png',
-      'capguy/walk/0004.png',
-      'capguy/walk/0005.png',
-      'capguy/walk/0006.png',
-      'capguy/walk/0007.png',
-      'capguy/walk/0008.png'
-  ], 10, true, false);
-
-  // play animation
-  capguy.animations.play('walk');
-}
-
-function fooupdate(){
-
-  capguy.x += 3;
-  if(capguy.x > 800)
-  {
-      capguy.x = -50;
-  }
-}
+this.game.state.add('Game', PhaserGame, true);
