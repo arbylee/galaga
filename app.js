@@ -1,5 +1,3 @@
-
-
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
 var cursors;
 
@@ -85,10 +83,10 @@ Weapon.SingleBullet.prototype.fire = function (source) {
 
     if (this.game.time.time < this.nextFire) { return; }
 
-    var x = source.x + 10;
-    var y = source.y + 10;
+    var x = source.x + 24;
+    var y = source.y - 8;
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    this.getFirstExists(false).fire(x, y, -90, this.bulletSpeed, 0, 0);
 
     this.nextFire = this.game.time.time + this.fireRate;
 
@@ -106,7 +104,7 @@ var PhaserGame = function () {
     this.weapons = [];
     this.currentWeapon = 0;
     this.weaponName = null;
-
+    this.playerMoveSpeed = 230;
 };
 
 PhaserGame.prototype = {
@@ -138,16 +136,16 @@ PhaserGame.prototype = {
     this.player.body.velocity.x = 0;
     this.player.body.velocity.y = 0;
     if(cursors.left.isDown){
-      this.player.body.velocity.x -= 150;
+      this.player.body.velocity.x -= this.playerMoveSpeed;
     }
     if(cursors.right.isDown){
-      this.player.body.velocity.x += 150;
+      this.player.body.velocity.x += this.playerMoveSpeed;
     }
     if(cursors.up.isDown){
-      this.player.body.velocity.y -= 150;
+      this.player.body.velocity.y -= this.playerMoveSpeed;
     }
     if(cursors.down.isDown){
-      this.player.body.velocity.y += 150;
+      this.player.body.velocity.y += this.playerMoveSpeed;
     }
     if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
       this.weapons[this.currentWeapon].fire(this.player);
