@@ -1,4 +1,6 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game');
+var GAME_WIDTH = 800;
+var GAME_HEIGHT = 600;
+var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, 'game');
 var cursors;
 
 var PhaserGame = function () {
@@ -41,12 +43,14 @@ PhaserGame.prototype = {
     this.weapons.push(new window['galaga'].Weapon.SingleBullet(this.game));
 
     this.enemies = this.game.add.group();
-    this.enemies.createMultiple(20, 'enemy');
+    //this.enemies.createMultiple(20, 'enemy');
     this.enemies.enableBody = true;
     this.game.physics.arcade.enable(this.enemies);
+    for (i = 0; i < 50; i++) {
+      this.enemies.add(new window['galaga'].Enemy());
+    }
 
-    var enemy = this.enemies.getFirstDead();
-    enemy.reset(400, 100);
+    this.enemyCreateLoop = this.game.time.events.loop(1500, this.spawnEnemy, this);
   },
 
   update: function(){
@@ -73,6 +77,11 @@ PhaserGame.prototype = {
   weaponsHitEnemy: function(weapon, enemy){
     weapon.kill();
     enemy.kill();
+  },
+  spawnEnemy: function(){
+    var enemy = this.enemies.getFirstDead();
+    enemy.reset(this.game.rnd.between(0, GAME_WIDTH), -100);
+    enemy.body.velocity.y = 130;
   }
 }
 
