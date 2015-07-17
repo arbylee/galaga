@@ -73,9 +73,14 @@ PhaserGame.prototype = {
     }
 
     this.physics.arcade.overlap(this.weapons, this.enemies, this.weaponsHitEnemy, null, this);
+    this.physics.arcade.overlap(this.player, this.enemies, this.enemiesHitPlayer, null, this);
   },
   weaponsHitEnemy: function(weapon, enemy){
     weapon.kill();
+    enemy.kill();
+  },
+  enemiesHitPlayer: function(player, enemy){
+    player.kill();
     enemy.kill();
   },
   spawnEnemy: function(){
