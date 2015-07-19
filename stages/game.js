@@ -50,21 +50,27 @@
     update: function(){
       this.player.body.velocity.x = 0;
       this.player.body.velocity.y = 0;
-      if(cursors.left.isDown){
-        this.player.body.velocity.x -= this.playerMoveSpeed;
-        this.player.animations.play('left');
-      } else if(cursors.right.isDown){
-        this.player.body.velocity.x += this.playerMoveSpeed;
-        this.player.animations.play('right');
-      } else if(cursors.up.isDown){
-        this.player.body.velocity.y -= this.playerMoveSpeed;
-      } else if(cursors.down.isDown){
-        this.player.body.velocity.y += this.playerMoveSpeed;
-      } else {
+
+      if(!cursors.right.isDown && !cursors.left.isDown){
         this.player.animations.stop();
         this.player.frame = 2;
+      } else {
+        if(cursors.left.isDown){
+          this.player.body.velocity.x -= this.playerMoveSpeed;
+          this.player.animations.play('left');
+        }
+        if(cursors.right.isDown){
+          this.player.body.velocity.x += this.playerMoveSpeed;
+          this.player.animations.play('right');
+        }
       }
 
+      if(cursors.up.isDown){
+        this.player.body.velocity.y -= this.playerMoveSpeed;
+      }
+      if(cursors.down.isDown){
+        this.player.body.velocity.y += this.playerMoveSpeed;
+      }
       if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
         this.weapons[this.currentWeapon].fire(this.player);
       }
