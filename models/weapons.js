@@ -82,7 +82,7 @@
 
       if (this.game.time.time < this.nextFire) { return; }
 
-      var x = source.x + 24;
+      var x = source.x + 12;
       var y = source.y - 8;
 
       this.getFirstExists(false).fire(x, y, -90, this.bulletSpeed, 0, 0);

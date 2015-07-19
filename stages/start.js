@@ -6,9 +6,9 @@
     init: function(){},
 
     preload: function(){
-      this.game.load.image('background', 'assets/background.png')
-      this.game.load.image('ship', 'assets/ship.png')
-      this.game.load.image('enemy', 'assets/enemy.png')
+      this.game.load.image('background', 'assets/background.png');
+      this.game.load.spritesheet('ship', 'assets/player_ship_1.png', 24, 32);
+      this.game.load.image('enemy', 'assets/mob_vessel_1.png');
       for (var i = 1; i <= 1; i++)
       {
           this.load.image('bullet' + i, 'assets/bullet_' + i + '.png');

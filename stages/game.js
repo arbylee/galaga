@@ -27,7 +27,9 @@
     create: function(){
       this.weapons = [];
       this.game.add.sprite(0, 0, 'background');
-      this.player = this.game.add.sprite(400, 300, 'ship')
+      this.player = this.game.add.sprite(400, 300, 'ship');
+      this.player.animations.add('left', [0, 1], 4, true);
+      this.player.animations.add('right', [3, 4], 4, true);
       this.game.physics.arcade.enable(this.player);
       this.player.body.collideWorldBounds = true;
       cursors = this.game.input.keyboard.createCursorKeys();
@@ -50,20 +52,22 @@
       this.player.body.velocity.y = 0;
       if(cursors.left.isDown){
         this.player.body.velocity.x -= this.playerMoveSpeed;
-      }
-      if(cursors.right.isDown){
+        this.player.animations.play('left');
+      } else if(cursors.right.isDown){
         this.player.body.velocity.x += this.playerMoveSpeed;
-      }
-      if(cursors.up.isDown){
+        this.player.animations.play('right');
+      } else if(cursors.up.isDown){
         this.player.body.velocity.y -= this.playerMoveSpeed;
-      }
-      if(cursors.down.isDown){
+      } else if(cursors.down.isDown){
         this.player.body.velocity.y += this.playerMoveSpeed;
+      } else {
+        this.player.animations.stop();
+        this.player.frame = 2;
       }
+
       if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
         this.weapons[this.currentWeapon].fire(this.player);
       }
-
       this.physics.arcade.overlap(this.weapons, this.enemies, this.weaponsHitEnemy, null, this);
       this.physics.arcade.overlap(this.player, this.enemies, this.enemiesHitPlayer, null, this);
     },
