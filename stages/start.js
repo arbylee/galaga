@@ -13,6 +13,10 @@
       {
           this.load.image('bullet' + i, 'assets/bullet_' + i + '.png');
       }
+      for (var i = 1; i <= 1; i++)
+      {
+          this.load.image('mob_bullet_' + i, 'assets/mob_bullet_' + i + '.png');
+      }
     },
 
     create: function(){

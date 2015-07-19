@@ -37,7 +37,6 @@
       this.weapons.push(new window['galaga'].Weapon.SingleBullet(this.game));
 
       this.enemies = this.game.add.group();
-      //this.enemies.createMultiple(20, 'enemy');
       this.enemies.enableBody = true;
       this.game.physics.arcade.enable(this.enemies);
       for (i = 0; i < 50; i++) {
