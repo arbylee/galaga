@@ -1,10 +1,11 @@
 (function(){
   window['galaga'] = window['galaga'] || {};
 
-  var Enemy = function () {
-      Phaser.Sprite.call(this, game, 0, 0, 'enemy');
-      this.exists = false;
-      this.alive = false;
+  var Enemy = function (state) {
+    this.game = state.game;
+    Phaser.Sprite.call(this, this.game, 0, 0, 'enemy');
+    this.exists = false;
+    this.alive = false;
   };
 
   Enemy.prototype = Object.create(Phaser.Sprite.prototype);
