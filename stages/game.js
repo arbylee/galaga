@@ -11,7 +11,6 @@
       this.cursors = null;
       this.speed = 300;
 
-      this.weapons = [];
       this.currentWeapon = 0;
       this.weaponName = null;
       this.playerMoveSpeed = 230;
@@ -26,6 +25,7 @@
     },
 
     create: function(){
+      this.weapons = [];
       this.game.add.sprite(0, 0, 'background');
       this.player = this.game.add.sprite(400, 300, 'ship')
       this.game.physics.arcade.enable(this.player);
@@ -74,6 +74,7 @@
     enemiesHitPlayer: function(player, enemy){
       player.kill();
       enemy.kill();
+      this.game.state.start('GameOver');
     },
     spawnEnemy: function(){
       var enemy = this.enemies.getFirstDead();
