@@ -6,6 +6,7 @@
     this.gameState = state;
     this.game = state.game;
     Phaser.Sprite.call(this, this.game, 0, 0, 'enemy');
+    this.game.physics.arcade.enable(this);
     this.exists = false;
     this.alive = false;
     this.currentWeapon = 0;
