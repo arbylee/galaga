@@ -14,6 +14,7 @@
 
     this.tracking = false;
     this.scaleSpeed = 0;
+    this.power = 5;
   };
 
   EnemyBullet.prototype = Object.create(Phaser.Sprite.prototype);
@@ -61,6 +62,7 @@
       Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
       this.bulletSpeed = 400;
+      this.power = 5;
 
       for (var i = 0; i < 64; i++)
       {

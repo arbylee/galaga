@@ -21,6 +21,8 @@
       this.game.add.sprite(0, 0, 'background');
       this.player = new window['galaga'].Player(this);
 
+      this.healthText = this.game.add.text(10, CONFIG.gameHeight - 30, "Health: " + this.player.currentHealth, {font: "16px Arial", fill: "#FFFFFF"});
+
       this.enemyWeapons = [];
       this.enemyWeapons.push(new window['galaga'].EnemyWeapon.SingleBullet(this.game));
 
@@ -36,21 +38,20 @@
     update: function(){
       this.physics.arcade.overlap(this.player.weapons, this.enemies, this.weaponsHitEnemy, null, this);
       this.physics.arcade.overlap(this.player, this.enemies, this.enemiesHitPlayer, null, this);
-      this.physics.arcade.overlap(this.enemyWeapons, this.player, this.enemyWeaponsHitPlayer, null, this);
+      this.physics.arcade.overlap(this.player, this.enemyWeapons, this.enemyWeaponsHitPlayer, null, this);
+      this.healthText.text = "Health: " + this.player.currentHealth;
     },
     weaponsHitEnemy: function(weapon, enemy){
       weapon.kill();
       enemy.kill();
     },
     enemiesHitPlayer: function(player, enemy){
-      player.kill();
+      player.takeDamage(enemy.collisionDamage);
       enemy.kill();
-      this.game.state.start('GameOver');
     },
-    enemyWeaponsHitPlayer: function(weapon, player){
+    enemyWeaponsHitPlayer: function(player, weapon){
+      player.takeDamage(weapon.power);
       weapon.kill();
-      player.kill();
-      this.game.state.start('GameOver');
     },
     spawnEnemy: function(){
       var enemy = this.enemies.getFirstDead();

@@ -15,6 +15,8 @@
     this.weapons = [];
     this.weapons.push(new window['galaga'].Weapon.SingleBullet(this.game));
     this.currentWeapon = 0;
+    this.maxHealth = 100;
+    this.currentHealth = this.maxHealth;
   }
 
   Player.prototype.constructor = Player;
@@ -48,5 +50,17 @@
       this.weapons[this.currentWeapon].fire(this);
     }
   }
+
+  Player.prototype.takeDamage = function(amount){
+    this.currentHealth -= amount;
+    if(this.currentHealth <= 0){
+      this.die();
+    }
+  };
+
+  Player.prototype.die = function(){
+    this.kill();
+    this.game.state.start('GameOver');
+  };
   window['galaga'].Player = Player;
 })();

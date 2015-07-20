@@ -13,6 +13,7 @@
 
     this.fireRate = 600;
     this.nextFire = 0;
+    this.collisionDamage = 20;
   };
 
   Enemy.prototype = Object.create(Phaser.Sprite.prototype);
