@@ -60,9 +60,7 @@
 
       Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
-      this.nextFire = 0;
       this.bulletSpeed = 400;
-      this.fireRate = 600;
 
       for (var i = 0; i < 64; i++)
       {
@@ -77,15 +75,9 @@
   EnemyWeapon.SingleBullet.prototype.constructor = EnemyWeapon.SingleBullet;
 
   EnemyWeapon.SingleBullet.prototype.fire = function (source) {
-    if (this.game.time.time < this.nextFire) { return; }
-
     var x = source.x + 18;
     var y = source.y + 32;
-
     this.getFirstExists(false).fire(x, y, 90, this.bulletSpeed, 0, 0);
-
-    this.nextFire = this.game.time.time + this.fireRate;
-
   };
 
   window['galaga'].EnemyWeapon = EnemyWeapon;

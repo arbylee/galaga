@@ -25,7 +25,6 @@
     },
 
     create: function(){
-      this.weapons = [];
       this.game.add.sprite(0, 0, 'background');
       this.player = this.game.add.sprite(400, 300, 'ship');
       this.player.animations.add('left', [0, 1], 4, true);
@@ -34,7 +33,11 @@
       this.player.body.collideWorldBounds = true;
       cursors = this.game.input.keyboard.createCursorKeys();
 
+      this.weapons = [];
       this.weapons.push(new window['galaga'].Weapon.SingleBullet(this.game));
+
+      this.enemyWeapons = [];
+      this.enemyWeapons.push(new window['galaga'].EnemyWeapon.SingleBullet(this.game));
 
       this.enemies = this.game.add.group();
       this.enemies.enableBody = true;
@@ -75,6 +78,10 @@
       }
       this.physics.arcade.overlap(this.weapons, this.enemies, this.weaponsHitEnemy, null, this);
       this.physics.arcade.overlap(this.player, this.enemies, this.enemiesHitPlayer, null, this);
+      this.physics.arcade.overlap(this.enemyWeapons, this.player, this.enemyWeaponsHitPlayer, null, this);
+      // Need a common pool of enemy bullets
+      //
+      // Also pull user controls out into a player class rather than in the game state
     },
     weaponsHitEnemy: function(weapon, enemy){
       weapon.kill();
@@ -83,6 +90,11 @@
     enemiesHitPlayer: function(player, enemy){
       player.kill();
       enemy.kill();
+      this.game.state.start('GameOver');
+    },
+    enemyWeaponsHitPlayer: function(weapon, player){
+      weapon.kill();
+      player.kill();
       this.game.state.start('GameOver');
     },
     spawnEnemy: function(){
