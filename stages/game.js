@@ -36,22 +36,22 @@
     },
 
     update: function(){
-      this.physics.arcade.overlap(this.player.weapons, this.enemies, this.weaponsHitEnemy, null, this);
+      this.physics.arcade.overlap(this.player.weapons, this.enemies, this.bulletsHitEnemy, null, this);
       this.physics.arcade.overlap(this.player, this.enemies, this.enemiesHitPlayer, null, this);
-      this.physics.arcade.overlap(this.player, this.enemyWeapons, this.enemyWeaponsHitPlayer, null, this);
+      this.physics.arcade.overlap(this.player, this.enemyWeapons, this.enemyBulletsHitPlayer, null, this);
       this.healthText.text = "Health: " + this.player.currentHealth;
     },
-    weaponsHitEnemy: function(weapon, enemy){
-      weapon.kill();
-      enemy.takeDamage(weapon.power);
+    bulletsHitEnemy: function(bullet, enemy){
+      bullet.kill();
+      enemy.takeDamage(bullet.power);
     },
     enemiesHitPlayer: function(player, enemy){
       player.takeDamage(enemy.collisionDamage);
       enemy.kill();
     },
-    enemyWeaponsHitPlayer: function(player, weapon){
-      player.takeDamage(weapon.power);
-      weapon.kill();
+    enemyBulletsHitPlayer: function(player, bullet){
+      player.takeDamage(bullet.power);
+      bullet.kill();
     },
     spawnEnemy: function(){
       var enemy = this.enemies.getFirstDead();
