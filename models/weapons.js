@@ -16,6 +16,8 @@
       this.tracking = false;
       this.scaleSpeed = 0;
 
+      this.power = 5;
+
   };
 
   Bullet.prototype = Object.create(Phaser.Sprite.prototype);

@@ -43,7 +43,7 @@
     },
     weaponsHitEnemy: function(weapon, enemy){
       weapon.kill();
-      enemy.kill();
+      enemy.takeDamage(weapon.power);
     },
     enemiesHitPlayer: function(player, enemy){
       player.takeDamage(enemy.collisionDamage);
@@ -55,6 +55,7 @@
     },
     spawnEnemy: function(){
       var enemy = this.enemies.getFirstDead();
+      enemy.revive();
       enemy.reset(this.game.rnd.between(0, CONFIG.gameWidth), -100);
       enemy.body.velocity.y = 130;
     }
