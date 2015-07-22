@@ -82,6 +82,34 @@
     this.getFirstExists(false).fire(x, y, 90, this.bulletSpeed, 0, 0);
   };
 
+  EnemyWeapon.Spread = function (game) {
+
+      Phaser.Group.call(this, game, game.world, 'Spread', false, true, Phaser.Physics.ARCADE);
+
+      this.bulletSpeed = 250;
+      this.power = 3;
+
+      for (var i = 0; i < 64; i++)
+      {
+          this.add(new EnemyBullet(game, 'mob_bullet_1', this), true);
+      }
+
+      return this;
+
+  };
+
+  EnemyWeapon.Spread.prototype = Object.create(Phaser.Group.prototype);
+  EnemyWeapon.Spread.prototype.constructor = EnemyWeapon.Spread;
+
+  EnemyWeapon.Spread.prototype.fire = function (source) {
+    var x = source.x + 18;
+    var y = source.y + 32;
+    this.getFirstExists(false).fire(x, y, 70, this.bulletSpeed, 0, 0);
+    this.getFirstExists(false).fire(x, y, 50, this.bulletSpeed, 0, 0);
+    this.getFirstExists(false).fire(x, y, 110, this.bulletSpeed, 0, 0);
+    this.getFirstExists(false).fire(x, y, 130, this.bulletSpeed, 0, 0);
+  };
+
   window['galaga'].EnemyWeapon = EnemyWeapon;
 })();
 

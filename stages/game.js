@@ -25,6 +25,7 @@
 
       this.enemyWeapons = [];
       this.enemyWeapons.push(new window['galaga'].EnemyWeapon.SingleBullet(this.game));
+      this.enemyWeapons.push(new window['galaga'].EnemyWeapon.Spread(this.game));
 
       this.enemies = this.game.add.group();
       this.enemies.enableBody = true;
