@@ -2,29 +2,29 @@
   window['galaga'] = window['galaga'] || {};
 
   var CONFIG = window['galaga'].CONFIG;
-  var Enemy = function (state) {
+  var FighterPlane = function (state) {
     this.gameState = state;
     this.game = state.game;
-    Phaser.Sprite.call(this, this.game, 0, 0, 'enemy');
+    Phaser.Sprite.call(this, this.game, 0, 0, 'fighter_plane');
     this.game.physics.arcade.enable(this);
     this.exists = false;
     this.alive = false;
-    this.currentWeapon = 0;
+    this.currentWeapon = CONFIG.enemyWeaponsMap['SingleBullet'];
 
-    this.fireRate = 600;
+    this.fireRate = 900;
     this.nextFire = 0;
     this.collisionDamage = 20;
-    this.maxHealth = 30;
+    this.maxHealth = 15;
     this.currentHealth = this.maxHealth;
   };
 
-  Enemy.prototype = Object.create(Phaser.Sprite.prototype);
-  Enemy.prototype.constructor = Enemy;
+  FighterPlane.prototype = Object.create(Phaser.Sprite.prototype);
+  FighterPlane.prototype.constructor = FighterPlane;
 
-  Enemy.prototype.create = function(){
+  FighterPlane.prototype.create = function(){
   }
 
-  Enemy.prototype.update = function () {
+  FighterPlane.prototype.update = function () {
     if (this.alive && this.gameState.player.alive){
       this.fire();
     };
@@ -33,28 +33,28 @@
     }
   };
 
-  Enemy.prototype.fire = function(){
+  FighterPlane.prototype.fire = function(){
     if (this.game.time.time < this.nextFire) { return; }
 
     this.gameState.enemyWeapons[this.currentWeapon].fire(this);
     this.nextFire = this.game.time.time + this.fireRate;
   }
 
-  Enemy.prototype.takeDamage = function(amount){
+  FighterPlane.prototype.takeDamage = function(amount){
     this.currentHealth -= amount;
     if(this.currentHealth <= 0){
       this.die();
     }
   }
 
-  Enemy.prototype.die = function(){
+  FighterPlane.prototype.die = function(){
     this.kill();
   }
 
-  Enemy.prototype.revive = function(){
+  FighterPlane.prototype.revive = function(){
     this.currentHealth = this.maxHealth;
   }
 
-  window['galaga'].Enemy = Enemy;
+  window['galaga'].FighterPlane = FighterPlane;
 })();
 

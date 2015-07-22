@@ -27,13 +27,19 @@
       this.enemyWeapons.push(new window['galaga'].EnemyWeapon.SingleBullet(this.game));
       this.enemyWeapons.push(new window['galaga'].EnemyWeapon.Spread(this.game));
 
-      this.enemies = this.game.add.group();
-      this.enemies.enableBody = true;
-      for (i = 0; i < 50; i++) {
-        this.enemies.add(new window['galaga'].Enemy(this));
+      this.enemies = [];
+      this.enemies[0] = this.game.add.group();
+      for (i = 0; i < 20; i++) {
+        this.enemies[0].add(new window['galaga'].FighterPlane(this));
       }
 
-      this.enemyCreateLoop = this.game.time.events.loop(1500, this.spawnEnemy, this);
+      this.enemies[1] = this.game.add.group();
+      for (i = 0; i < 20; i++) {
+        this.enemies[1].add(new window['galaga'].Eagle(this));
+      }
+
+      this.fighterPlaneCreateLoop = this.game.time.events.loop(1500, this.spawnEnemy, this, this.enemies[0]);
+      this.eagleCreateLoop = this.game.time.events.loop(2500, this.spawnEnemy, this, this.enemies[1]);
     },
 
     update: function(){
@@ -54,8 +60,8 @@
       player.takeDamage(bullet.power);
       bullet.kill();
     },
-    spawnEnemy: function(){
-      var enemy = this.enemies.getFirstDead();
+    spawnEnemy: function(enemyGroup){
+      var enemy = enemyGroup.getFirstDead();
       enemy.revive();
       enemy.reset(this.game.rnd.between(0, CONFIG.gameWidth), -100);
       enemy.body.velocity.y = 130;
