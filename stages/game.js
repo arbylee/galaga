@@ -61,7 +61,9 @@
     },
     enemiesHitPlayer: function(player, enemy){
       player.takeDamage(enemy.collisionDamage);
-      enemy.kill();
+      this.score += enemy.points;
+      this.updateGui();
+      enemy.die();
     },
     enemyBulletsHitPlayer: function(player, bullet){
       player.takeDamage(bullet.power);

@@ -2,6 +2,7 @@
   window['galaga'] = window['galaga'] || {};
 
   var Player = function (state) {
+    this.gameState = state;
     this.game = state.game;
     this.moveSpeed = 230;
     Phaser.Sprite.call(this, this.game, 400, 300, 'ship');
@@ -60,7 +61,7 @@
 
   Player.prototype.die = function(){
     this.kill();
-    this.game.state.start('GameOver');
+    this.game.state.start('GameOver', true, false, {recentScore: this.gameState.score});
   };
   window['galaga'].Player = Player;
 })();
