@@ -61,7 +61,7 @@
 
       Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
 
-      this.bulletSpeed = 400;
+      this.bulletSpeed = 300;
 
       for (var i = 0; i < 64; i++)
       {

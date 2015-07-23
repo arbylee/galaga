@@ -12,7 +12,7 @@
     this.points = 120;
 
     this.currentWeapon = CONFIG.enemyWeaponsMap['SingleBullet'];
-    this.fireRate = 900;
+    this.fireRate = 1400;
     this.nextFire = 0;
     this.collisionDamage = 20;
     this.maxHealth = 15;
