@@ -9,8 +9,9 @@
     this.game.physics.arcade.enable(this);
     this.exists = false;
     this.alive = false;
-    this.currentWeapon = CONFIG.enemyWeaponsMap['SingleBullet'];
+    this.points = 120;
 
+    this.currentWeapon = CONFIG.enemyWeaponsMap['SingleBullet'];
     this.fireRate = 900;
     this.nextFire = 0;
     this.collisionDamage = 20;
@@ -42,9 +43,6 @@
 
   FighterPlane.prototype.takeDamage = function(amount){
     this.currentHealth -= amount;
-    if(this.currentHealth <= 0){
-      this.die();
-    }
   }
 
   FighterPlane.prototype.die = function(){

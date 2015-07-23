@@ -22,6 +22,8 @@
       this.player = new window['galaga'].Player(this);
 
       this.healthText = this.game.add.text(10, CONFIG.gameHeight - 30, "Health: " + this.player.currentHealth, {font: "16px Arial", fill: "#FFFFFF"});
+      this.score = 0;
+      this.scoreText = this.game.add.text(CONFIG.gameWidth - 80, CONFIG.gameHeight - 30, "Score: " + this.score, {font: "16px Arial", fill: "#FFFFFF"});
 
       this.enemyWeapons = [];
       this.enemyWeapons.push(new window['galaga'].EnemyWeapon.SingleBullet(this.game));
@@ -51,6 +53,11 @@
     bulletsHitEnemy: function(bullet, enemy){
       bullet.kill();
       enemy.takeDamage(bullet.power);
+      if(enemy.currentHealth <= 0){
+        this.score += enemy.points;
+        this.updateGui();
+        enemy.die();
+      }
     },
     enemiesHitPlayer: function(player, enemy){
       player.takeDamage(enemy.collisionDamage);
@@ -65,6 +72,9 @@
       enemy.revive();
       enemy.reset(this.game.rnd.between(0, CONFIG.gameWidth), -100);
       enemy.body.velocity.y = 130;
+    },
+    updateGui: function(){
+      this.scoreText.text = "Score: " + this.score;
     }
   }
 

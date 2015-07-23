@@ -9,8 +9,9 @@
     this.game.physics.arcade.enable(this);
     this.exists = false;
     this.alive = false;
-    this.currentWeapon = CONFIG.enemyWeaponsMap['Spread'];
+    this.points = 80;
 
+    this.currentWeapon = CONFIG.enemyWeaponsMap['Spread'];
     this.fireRate = 1050;
     this.nextFire = 0;
     this.collisionDamage = 20;
