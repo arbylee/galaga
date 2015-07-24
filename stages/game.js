@@ -54,16 +54,12 @@
       bullet.kill();
       enemy.takeDamage(bullet.power);
       if(enemy.currentHealth <= 0){
-        this.score += enemy.points;
-        this.updateGui();
-        enemy.die();
+        this.killEnemy(enemy);
       }
     },
     enemiesHitPlayer: function(player, enemy){
       player.takeDamage(enemy.collisionDamage);
-      this.score += enemy.points;
-      this.updateGui();
-      enemy.die();
+      this.killEnemy(enemy);
     },
     enemyBulletsHitPlayer: function(player, bullet){
       player.takeDamage(bullet.power);
@@ -73,10 +69,15 @@
       var enemy = enemyGroup.getFirstDead();
       enemy.revive();
       enemy.reset(this.game.rnd.between(0, CONFIG.gameWidth), -100);
-      enemy.body.velocity.y = 130;
+      enemy.body.velocity.y = CONFIG.defaultVelocity;
     },
     updateGui: function(){
       this.scoreText.text = "Score: " + this.score;
+    },
+    killEnemy: function(enemy){
+      this.score += enemy.points;
+      this.updateGui();
+      enemy.die();
     }
   }
 
