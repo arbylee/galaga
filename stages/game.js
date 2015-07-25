@@ -40,6 +40,11 @@
         this.enemies[1].add(new window['galaga'].Eagle(this));
       }
 
+      this.powerups = this.game.add.group();
+      for (i = 0; i < 20; i++) {
+        this.powerups.add(new window['galaga'].Powerup(this));
+      }
+
       this.fighterPlaneCreateLoop = this.game.time.events.loop(1500, this.spawnEnemy, this, this.enemies[0]);
       this.eagleCreateLoop = this.game.time.events.loop(2500, this.spawnEnemy, this, this.enemies[1]);
     },
@@ -77,7 +82,13 @@
     killEnemy: function(enemy){
       this.score += enemy.points;
       this.updateGui();
+      this.spawnPowerup(enemy);
       enemy.die();
+    },
+    spawnPowerup: function(source){
+      var powerup = this.powerups.getFirstDead();
+      powerup.reset(source.x, source.y);
+      powerup.body.velocity.y = CONFIG.defaultPowerupVelocity;
     }
   }
 
