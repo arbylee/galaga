@@ -17,6 +17,8 @@
     this.collisionDamage = 20;
     this.maxHealth = 15;
     this.currentHealth = this.maxHealth;
+
+    this.powerupSpawnChance = 0.3;
   };
 
   FighterPlane.prototype = Object.create(Phaser.Sprite.prototype);

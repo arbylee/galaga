@@ -53,11 +53,12 @@
       this.physics.arcade.overlap(this.player.weapons, this.enemies, this.bulletsHitEnemy, null, this);
       this.physics.arcade.overlap(this.player, this.enemies, this.enemiesHitPlayer, null, this);
       this.physics.arcade.overlap(this.player, this.enemyWeapons, this.enemyBulletsHitPlayer, null, this);
+      this.physics.arcade.overlap(this.player, this.powerups, this.playerPickupPowerup, null, this);
       this.healthText.text = "Health: " + this.player.currentHealth;
     },
     bulletsHitEnemy: function(bullet, enemy){
       bullet.kill();
-      enemy.takeDamage(bullet.power);
+      enemy.takeDamage(this.player.power * bullet.power);
       if(enemy.currentHealth <= 0){
         this.killEnemy(enemy);
       }
@@ -86,9 +87,15 @@
       enemy.die();
     },
     spawnPowerup: function(source){
-      var powerup = this.powerups.getFirstDead();
-      powerup.reset(source.x, source.y);
-      powerup.body.velocity.y = CONFIG.defaultPowerupVelocity;
+      if(source.powerupSpawnChance > this.game.rnd.realInRange(0, 1) ){
+        var powerup = this.powerups.getFirstDead();
+        powerup.reset(source.x, source.y);
+        powerup.body.velocity.y = CONFIG.defaultPowerupVelocity;
+      }
+    },
+    playerPickupPowerup: function(player, powerup){
+      powerup.apply(player);
+      powerup.kill();
     }
   }
 

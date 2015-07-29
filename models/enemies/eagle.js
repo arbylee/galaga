@@ -17,6 +17,8 @@
     this.collisionDamage = 20;
     this.maxHealth = 25;
     this.currentHealth = this.maxHealth;
+
+    this.powerupSpawnChance = 0.15;
   };
 
   Eagle.prototype = Object.create(Phaser.Sprite.prototype);

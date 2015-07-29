@@ -18,6 +18,8 @@
     this.currentWeapon = 0;
     this.maxHealth = 100;
     this.currentHealth = this.maxHealth;
+
+    this.power = 3;
   }
 
   Player.prototype.constructor = Player;
